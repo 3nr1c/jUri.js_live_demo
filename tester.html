@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8"/>
+	<title>jUri  (v0.4)</title>
+	<script src="../juri.orig.js"></script>
+
+	<script>
+		jUri.hashchange(function(e){
+			alert('The hash was changed!');
+		});
+
+		jUri.urlchange(function(e){
+			alert('The url is now "'+e.newUrl+'"!');
+			if( e.newUrl.match(/hello_world/) ){
+				jUri.set(e.oldUrl);
+			}
+		});
+
+		jUri.animateAnchorLinks('*', false);
+
+		jUri.title('jUri - test document (v0.4)');
+
+		function loadTest1(){
+			jUri.ajax({
+				url:'ajax_test.txt',
+				setUrl:'/jUri.js/test/ajax_test.txt',
+				target:'#load, p[name="load2"]',
+				bindToUrl:true
+			});
+		}
+
+		function loadJSONTest(){
+			jUri.ajax({
+				url:'json_test.json',
+				response:'json',
+				callback:function(data){
+					jUri.log(data)
+					document.getElementById('load').innerHTML = data.message;
+				}
+			})
+		}
+	</script>
+
+	<style>
+	<!--
+	body {height:1500px;}/*for page scroll testing*/
+	-->
+	</style>
+</head>
+
+<body>
+
+	<hgroup>
+		<h1>jUri - test document</h1>
+	</hgroup>
+	<p>Test passed on: Firefox 9+, Opera 11.61, Chrome 17+, iOS Safari 4.1</p>
+
+	<p>Click on any list element to see its effect</p>
+	<p name="load2"></p>
+
+	<ul>
+
+		<li data-hash="changed">data-hash test</li>
+		<li data-hash="">deleting the hash</li>
+
+		<li><a href="#anchor1">Scroll to "Hi!"</a></li>
+
+		<li onclick="jUri.reload(2000);">Reload after 2 seconds</li>
+
+		<li><a href="http://github.com/3nr1c/jUri.js" data-after="1500">(data-after) go to the jUri's page at github after 1500 ms</a></li>
+
+		<li><a href="#ptag">Go to the data-name test</a></li>
+		<li onclick="jUri.title(['Hello','World'])">Start title changing</li>
+		<li onclick="jUri.title().stop('Stopped!')">Stop title changing</li>
+		<li onclick="jUri.set('hello_world',true)">Fire .urlchange event</li>
+		<li onclick="loadTest1()">Load ajax_test.txt using jUri.ajax()</li>
+		<li onclick="loadJSONTest()">Load json_test.json using jUri.ajax() and a callback</li>
+
+	</ul>
+
+	<div id="load"></div>
+
+	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+	<a name="anchor1"></a>Hi!<br/>
+	<a href="#">Scroll to top</a>
+
+	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+	<p data-name="ptag">Testing data-name</p><br/>
+	<a href="#">Scroll to top</a>
+
+</body>
+
+</html>
